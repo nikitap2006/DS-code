@@ -1,90 +1,63 @@
-Q5) Create, traverse nodes in a singly linked list
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h>
+5. Write a program in C to Create, traverse nodes in a singly linked list. 
 
-struct Node
-{
-    int data;
-    struct Node *next;
-};
+#include <stdio.h> 
+#include <conio.h> 
+#include <alloc.h>  // Turbo C uses alloc.h instead of stdlib.h for malloc() 
 
-struct Node *head = NULL;
-
-// Function to create linked list
-void createList(int n)
-{
-    struct Node *newNode, *temp;
-    int data, i;
-
-    if (n <= 0)
-    {
-        printf("Invalid number of nodes.\n");
-        return;
-    }
-
-    for (i = 1; i <= n; i++)
-    {
-        newNode = (struct Node *)malloc(sizeof(struct Node));
-
-        if (newNode == NULL)
-        {
-            printf("Memory allocation failed.\n");
-            return;
-        }
-
-        printf("Enter data for node %d: ", i);
-        scanf("%d", &data);
-        newNode->data = data;
-        newNode->next = NULL;
-
-        if (head == NULL)
-        {
-            head = newNode;
-            temp = head;
-        }
-        else
-        {
-            temp->next = newNode;
-            temp = newNode;
-        }
-    }
-
-    printf("\nLinked list created successfully.\n");
+// Structure for a singly linked list node 
+struct Node 
+{ 
+int data; 
+struct Node *next; 
+}; 
+void main() 
+{ 
+struct Node *head = NULL, *newNode, *temp; 
+int choice = 1; 
+int value; 
+clrscr();
+printf("=== Singly Linked List Creation and Traversal ===\n"); 
+// Linked List Creation 
+while (choice) 
+{ 
+newNode = (struct Node *)malloc(sizeof(struct Node)); 
+if (newNode == NULL) 
+{ 
+printf("Memory allocation failed!\n"); 
+break; 
+} 
+printf("\nEnter data for the node: "); 
+scanf("%d", &value); 
+newNode->data = value; 
+newNode->next = NULL; 
+if (head == NULL) 
+{ 
+head = newNode; 
+temp = head; 
+} 
+else 
+{ 
+temp->next = newNode; 
+temp = newNode; 
+} 
+printf("Do you want to add another node? (1 = Yes / 0 = No): "); 
+scanf("%d", &choice); 
+} 
+// Traversing the linked list 
+printf("\nLinked List Elements:\n"); 
+temp = head; 
+if (temp == NULL) 
+{ 
+printf("List is empty!\n"); 
+} 
+else 
+{ 
+while (temp != NULL) 
+{ 
+printf("%d -> ", temp->data); 
+temp = temp->next; 
+} 
+printf("NULL\n"); 
+} 
+getch(); 
 }
-
-// Function to traverse the list
-void traverseList()
-{
-    struct Node *temp;
-
-    if (head == NULL)
-    {
-        printf("\nList is empty.\n");
-        return;
-    }
-
-    printf("\nThe linked list elements are:\n");
-    temp = head;
-    while (temp != NULL)
-    {
-        printf("%d -> ", temp->data);
-        temp = temp->next;
-    }
-    printf("NULL\n");
-}
-
-void main()
-{
-    int n;
-    clrscr(); // Clear screen (Turbo C specific)
-
-    printf("Enter the number of nodes: ");
-    scanf("%d", &n);
-
-    createList(n);
-    traverseList();
-
-    getch(); // Wait for key press before closing (Turbo C specific)
-}
-
