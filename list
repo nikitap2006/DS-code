@@ -1,99 +1,77 @@
-Q6)Create a adjacency list using graph data structure.
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h>
+6. Write a program in C to Create a adjacency list using graph data structure. 
 
-struct Node
-{
-    int vertex;
-    struct Node *next;
-};
+#include <stdio.h> 
+#include <conio.h> 
+#include <alloc.h>  // for malloc() in Turbo C 
 
-struct Graph
-{
-    int numVertices;
-    struct Node **adjLists; // Array of linked list pointers
-};
+// Structure for adjacency list node 
+struct Node 
+{ 
+int vertex; 
+struct Node *next; 
+}; 
 
-// Function to create a node
-struct Node *createNode(int v)
-{
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-    newNode->vertex = v;
-    newNode->next = NULL;
-    return newNode;
-}
-
-// Function to create a graph
-struct Graph *createGraph(int vertices)
-{
-    int i;
-    struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
-    graph->numVertices = vertices;
-
-    graph->adjLists = (struct Node **)malloc(vertices * sizeof(struct Node *));
-
-    for (i = 0; i < vertices; i++)
-        graph->adjLists[i] = NULL;
-
-    return graph;
-}
-
-// Function to add an edge (undirected graph)
-void addEdge(struct Graph *graph, int src, int dest)
-{
-    struct Node *newNode = createNode(dest);
-    newNode->next = graph->adjLists[src];
-    graph->adjLists[src] = newNode;
-
-    // Since undirected, add edge from dest to src also
-    newNode = createNode(src);
-    newNode->next = graph->adjLists[dest];
-    graph->adjLists[dest] = newNode;
-}
-
-// Function to print adjacency list
-void printGraph(struct Graph *graph)
-{
-    int v;
-    for (v = 0; v < graph->numVertices; v++)
-    {
-        struct Node *temp = graph->adjLists[v];
-        printf("\nAdjacency list of vertex %d: ", v);
-        while (temp)
-        {
-            printf("%d -> ", temp->vertex);
-            temp = temp->next;
-        }
-        printf("NULL\n");
-    }
-}
-
-void main()
-{
-    int vertices, edges, i, src, dest;
-    struct Graph *graph;
-
-    clrscr(); // Clear screen (Turbo C specific)
-
-    printf("Enter number of vertices: ");
-    scanf("%d", &vertices);
-
-    graph = createGraph(vertices);
-
-    printf("Enter number of edges: ");
-    scanf("%d", &edges);
-
-    for (i = 0; i < edges; i++)
-    {
-        printf("\nEnter edge %d (source destination): ", i + 1);
-        scanf("%d %d", &src, &dest);
-        addEdge(graph, src, dest);
-    }
-
-    printf("\nGraph created successfully!\n");
-    printGraph(graph);
-
-    getch(); // Wait for key press before closing
+// Function to create a new node 
+struct Node* createNode(int v) 
+{ 
+struct Node *newNode; 
+newNode = (struct Node *)malloc(sizeof(struct Node)); 
+newNode->vertex = v; 
+newNode->next = NULL; 
+return newNode; 
+} 
+void main() 
+{ 
+struct Node *adjList[20]; // Array of pointers for adjacency list 
+struct Node *temp; 
+int vertices, edges; 
+int i, j, src, dest; 
+clrscr(); // Clear screen 
+printf("=== Create Graph using Adjacency List ===\n"); 
+printf("Enter number of vertices: "); 
+scanf("%d", &vertices); 
+// Initialize adjacency list to NULL 
+for (i = 0; i < vertices; i++) 
+{ 
+adjList[i] = NULL; 
+} 
+    printf("Enter number of edges: "); 
+    scanf("%d", &edges); 
+ 
+    printf("\nEnter edges (source destination):\n"); 
+    for (i = 0; i < edges; i++) 
+    { 
+        printf("Edge %d: ", i + 1); 
+        scanf("%d %d", &src, &dest); 
+ 
+        // Create node for destination vertex 
+        temp = createNode(dest); 
+        temp->next = adjList[src]; 
+        adjList[src] = temp; 
+ 
+        // (Optional) For undirected graph, add reverse edge 
+        // Uncomment this part if you want an undirected graph: 
+        /* 
+        temp = createNode(src); 
+        temp->next = adjList[dest]; 
+        adjList[dest] = temp; 
+        */ 
+    } 
+ 
+    // Display the adjacency list 
+    printf("\nAdjacency List Representation:\n"); 
+    for (i = 0; i < vertices; i++) 
+    { 
+        struct Node *ptr = adjList[i]; 
+        printf("Vertex %d: ", i); 
+        while (ptr != NULL) 
+        { 
+            printf("-> %d ", ptr->vertex); 
+            ptr = ptr->next; 
+        } 
+        printf("-> NULL\n"); 
+    } 
+ 
+    getch(); // Wait for keypress before exit 
 }
 
